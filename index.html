@@ -27,21 +27,21 @@
     }
     .overlay {
       position: absolute;
-      top: 50%;
+      bottom: 20px; /* positions clock near bottom like your first one */
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translateX(-50%);
       text-align: center;
       color: white;
       font-family: Arial, sans-serif;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
     }
     #clock {
-      font-size: 3em;
+      font-size: 2.5em;
       font-weight: bold;
     }
     #date {
-      font-size: 1.5em;
-      margin-top: 10px;
+      font-size: 1.2em;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -58,18 +58,18 @@
     function updateClock() {
       const now = new Date();
 
-      // Clock in 12-hour format
+      // 12-hour format with AM/PM
       let hours = now.getHours();
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
       hours = hours % 12;
-      hours = hours ? hours : 12; // show 12 instead of 0
+      hours = hours ? hours : 12; 
 
       document.getElementById('clock').textContent =
         `${hours}:${minutes}:${seconds} ${ampm}`;
 
-      // Date and day
+      // Day + Date
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       document.getElementById('date').textContent =
         now.toLocaleDateString(undefined, options);
