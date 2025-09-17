@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Image + Live Clock</title>
+  <style>
+    html,body{height:100%;margin:0}
+    .hero{
+      position:relative;
+      width:100%;
+      height:100vh;
+      background: url('your-image.jpg') center/cover no-repeat;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    #clock{
+      position:absolute;
+      top:20px;            /* move clock where you want */
+      right:20px;          /* top-right corner */
+      padding:10px 14px;
+      border-radius:10px;
+      background: rgba(0,0,0,0.35); /* tweak opacity */
+      color:#fff;
+      font-weight:600;
+      font-size:28px;
+      backdrop-filter: blur(6px);    /* nice frosted look */
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .tz{display:block;font-size:11px;opacity:.85;margin-top:3px;font-weight:400}
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div id="clock">
+      <span id="time">00:00:00</span>
+      <span class="tz" id="tz">Africa/Lagos</span>
+    </div>
+  </div>
+
+  <script>
+    // Set desired timezone here. Use 'local' to show viewer's timezone.
+    const TIMEZONE = 'Africa/Lagos'; // <-- change or set to 'local'
+
+    function getTimeString(now, tz) {
+      try {
+        if (!tz || tz.toLowerCase() === 'local') {
+          return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        }
+        return new Intl.DateTimeFormat('en-GB', {
+          timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+        }).format(now);
+      } catch (e) {
+        // If timezone unsupported, fallback to local
+        return now.toLocaleTimeString();
+      }
+    }
+
+    function updateClock(){
+      const now = new Date();
+      document.getElementById('time').textContent = getTimeString(now, TIMEZONE);
+      document.getElementById('tz').textContent = TIMEZONE === 'local' ? (Intl.DateTimeFormat().resolvedOptions().timeZone || '') : TIMEZONE;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
